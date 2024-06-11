@@ -6,7 +6,6 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import {MotiView, MotiText} from 'moti';
 import LinearGradient from 'react-native-linear-gradient';
 
 export default function App() {
@@ -37,57 +36,34 @@ export default function App() {
   }, [email, password]);
 
   return (
-    <LinearGradient
-      style={styles.container}
-      colors={['#8007d9', '#333']}
-      start={{x: 0, y: 0}}
-      end={{x: 1, y: 1}}>
-      <View style={styles.topView}>
-        <MotiView
-          from={{translateY: -100, opacity: 0}}
-          animate={{translateY: 0, opacity: 1}}
-          transition={{type: 'timing', duration: 1000}}>
-          <MotiText style={styles.topText}>🚀 Aw3s0m3 Pr0j3ct 🚀</MotiText>
-        </MotiView>
-      </View>
+    <View style={styles.container}>
       <View style={styles.formContainer}>
+        <Text style={styles.topText}>Aw3s0m3 Pr0j3ct</Text>
         {showInputs && (
           <>
-            <MotiView
-              from={{translateX: -100, opacity: 0}}
-              animate={{translateX: 0, opacity: 1}}
-              transition={{type: 'timing', duration: 1500}}
-              style={styles.input}>
+            <View style={styles.input}>
               <TextInput
-                placeholder="📧 Email"
+                placeholder="Email"
                 style={styles.textInput}
                 placeholderTextColor="#333"
                 value={email}
                 onChangeText={setEmail}
               />
-            </MotiView>
-            <MotiView
-              from={{translateX: 100, opacity: 0}}
-              animate={{translateX: 0, opacity: 1}}
-              transition={{type: 'timing', duration: 1500}}
-              style={styles.input}>
+            </View>
+            <View style={styles.input}>
               <TextInput
-                placeholder="🔒 Password"
+                placeholder="Password"
                 style={styles.textInput}
                 placeholderTextColor="#333"
                 secureTextEntry
                 value={password}
                 onChangeText={setPassword}
               />
-            </MotiView>
+            </View>
           </>
         )}
         {showButtons && (
-          <MotiView
-            from={{translateY: 100, opacity: 0}}
-            animate={{translateY: 0, opacity: 1}}
-            transition={{type: 'timing', duration: 1500}}
-            style={styles.buttonRow}>
+          <View style={styles.buttonRow}>
             <TouchableOpacity
               style={styles.buttonContainer}
               disabled={!isSignUpEnabled}>
@@ -97,45 +73,37 @@ export default function App() {
                   styles.buttonEnable,
                   !isSignUpEnabled && styles.disabledButton,
                 ]}>
-                <Text style={styles.buttonText}>Sign Up ✍️</Text>
+                <Text style={styles.buttonText}>Sign Up</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonContainer}>
               <View style={[styles.buttonStyle, styles.buttonEnable]}>
-                <Text style={styles.buttonText}>Sign In 🔑</Text>
+                <Text style={styles.buttonText}>Sign In</Text>
               </View>
             </TouchableOpacity>
-          </MotiView>
+          </View>
         )}
       </View>
-    </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: '#1a1a1a',
-  },
-  formContainer: {
-    top: -80,
-    flex: 1,
-    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  topView: {
-    marginTop: 100,
-    alignItems: 'center',
+    backgroundColor: '#4B0082'
   },
   topText: {
-    fontSize: 24,
-    color: '#fff',
+    color: '#FFFFFF',
+    textAlign: 'center',
+    fontSize: 20,
+  },
+  formContainer: {
+    width: '80%',
   },
   input: {
-    width: '80%',
     marginVertical: 10,
     borderWidth: 1,
     borderColor: '#ccc',
@@ -149,7 +117,6 @@ const styles = StyleSheet.create({
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '80%',
     marginTop: 20,
   },
   buttonContainer: {
