@@ -1,118 +1,180 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
   View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
 } from 'react-native';
+import {MotiView, MotiText} from 'moti';
+import LinearGradient from 'react-native-linear-gradient';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+export default function App() {
+  const [showInputs, setShowInputs] = useState(false);
+  const [showButtons, setShowButtons] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isSignUpEnabled, setIsSignUpEnabled] = useState(false);
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowInputs(true);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+  useEffect(() => {
+    if (showInputs) {
+      const timer = setTimeout(() => {
+        setShowButtons(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [showInputs]);
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  useEffect(() => {
+    setIsSignUpEnabled(email.length > 0 && password.length > 0);
+  }, [email, password]);
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <LinearGradient
+      style={styles.container}
+      colors={['#8007d9', '#333']}
+      start={{x: 0, y: 0}}
+      end={{x: 1, y: 1}}>
+      <View style={styles.topView}>
+        <MotiView
+          from={{translateY: -100, opacity: 0}}
+          animate={{translateY: 0, opacity: 1}}
+          transition={{type: 'timing', duration: 1000}}>
+          <MotiText style={styles.topText}>🚀 Aw3s0m3 Pr0j3ct 🚀</MotiText>
+        </MotiView>
+      </View>
+      <View style={styles.formContainer}>
+        {showInputs && (
+          <>
+            <MotiView
+              from={{translateX: -100, opacity: 0}}
+              animate={{translateX: 0, opacity: 1}}
+              transition={{type: 'timing', duration: 1500}}
+              style={styles.input}>
+              <TextInput
+                placeholder="📧 Email"
+                style={styles.textInput}
+                placeholderTextColor="#333"
+                value={email}
+                onChangeText={setEmail}
+              />
+            </MotiView>
+            <MotiView
+              from={{translateX: 100, opacity: 0}}
+              animate={{translateX: 0, opacity: 1}}
+              transition={{type: 'timing', duration: 1500}}
+              style={styles.input}>
+              <TextInput
+                placeholder="🔒 Password"
+                style={styles.textInput}
+                placeholderTextColor="#333"
+                secureTextEntry
+                value={password}
+                onChangeText={setPassword}
+              />
+            </MotiView>
+          </>
+        )}
+        {showButtons && (
+          <MotiView
+            from={{translateY: 100, opacity: 0}}
+            animate={{translateY: 0, opacity: 1}}
+            transition={{type: 'timing', duration: 1500}}
+            style={styles.buttonRow}>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              disabled={!isSignUpEnabled}>
+              <View
+                style={[
+                  styles.buttonStyle,
+                  styles.buttonEnable,
+                  !isSignUpEnabled && styles.disabledButton,
+                ]}>
+                <Text style={styles.buttonText}>Sign Up ✍️</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonContainer}>
+              <View style={[styles.buttonStyle, styles.buttonEnable]}>
+                <Text style={styles.buttonText}>Sign In 🔑</Text>
+              </View>
+            </TouchableOpacity>
+          </MotiView>
+        )}
+      </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: '#1a1a1a',
   },
-  sectionTitle: {
+  formContainer: {
+    top: -80,
+    flex: 1,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  topView: {
+    marginTop: 100,
+    alignItems: 'center',
+  },
+  topText: {
     fontSize: 24,
-    fontWeight: '600',
+    color: '#fff',
   },
-  sectionDescription: {
-    marginTop: 8,
+  input: {
+    width: '80%',
+    marginVertical: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 10,
+    backgroundColor: '#fff',
+  },
+  textInput: {
+    height: 50,
+    padding: 10,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+    marginTop: 20,
+  },
+  buttonContainer: {
+    flex: 1,
+    marginHorizontal: 5,
+  },
+  buttonStyle: {
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#fff',
+  },
+  signUpButton: {
+    backgroundColor: '#ccc',
+  },
+  buttonEnable: {
+    backgroundColor: '#4B0082',
+  },
+  disabledButton: {
+    backgroundColor: '#ccc',
+  },
+  buttonText: {
+    color: '#fff',
     fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
   },
 });
-
-export default App;
