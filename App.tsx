@@ -6,7 +6,6 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 
 export default function App() {
   const [showInputs, setShowInputs] = useState(false);
