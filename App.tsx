@@ -6,8 +6,15 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import {MotiView, MotiText} from 'moti';
 import LinearGradient from 'react-native-linear-gradient';
+import {MotiView, MotiText} from 'moti';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withRepeat,
+  withTiming,
+  Easing,
+} from 'react-native-reanimated';
 
 export default function App() {
   const [showInputs, setShowInputs] = useState(false);
@@ -15,6 +22,25 @@ export default function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSignUpEnabled, setIsSignUpEnabled] = useState(false);
+
+  const scale = useSharedValue(1);
+
+  useEffect(() => {
+    scale.value = withRepeat(
+      withTiming(1.2, {
+        duration: 1000,
+        easing: Easing.inOut(Easing.ease),
+      }),
+      -1,
+      true,
+    );
+  }, []);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{scale: scale.value}],
+    };
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -47,7 +73,9 @@ export default function App() {
           from={{translateY: -100, opacity: 0}}
           animate={{translateY: 0, opacity: 1}}
           transition={{type: 'timing', duration: 1000}}>
-          <MotiText style={styles.topText}>🚀 Aw3s0m3 Pr0j3ct 🚀</MotiText>
+          <Animated.View style={animatedStyle}>
+            <MotiText style={styles.topText}>🚀 Aw3s0m3 Pr0j3ct 🚀</MotiText>
+          </Animated.View>
         </MotiView>
       </View>
       <View style={styles.formContainer}>
@@ -57,7 +85,7 @@ export default function App() {
               from={{translateX: -100, opacity: 0}}
               animate={{translateX: 0, opacity: 1}}
               transition={{type: 'timing', duration: 1500}}
-              style={styles.input}>
+              style={[styles.input, isSignUpEnabled && styles.inputValid]}>
               <TextInput
                 placeholder="📧 Email"
                 style={styles.textInput}
@@ -70,7 +98,7 @@ export default function App() {
               from={{translateX: 100, opacity: 0}}
               animate={{translateX: 0, opacity: 1}}
               transition={{type: 'timing', duration: 1500}}
-              style={styles.input}>
+              style={[styles.input, isSignUpEnabled && styles.inputValid]}>
               <TextInput
                 placeholder="🔒 Password"
                 style={styles.textInput}
@@ -141,6 +169,10 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 10,
     backgroundColor: '#fff',
+  },
+  inputValid: {
+    borderColor: '#36092b',
+    borderWidth: 3,
   },
   textInput: {
     height: 50,
